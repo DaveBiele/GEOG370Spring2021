@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First Map</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+
+   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
+
+   <script src = "./data/Bridge.geojson"></script>
+
+   <script src = "./data/Park.geojson"></script>
+
+   <script src = "./data/DECC.geojson"></script>
+
+</head>
+<body>
+
+    <div id="mapid"></div>
+    <style>
+        #mapid{ width: 900px; height: 900px;}
+    </style>
+
+    <script>
+        var map = L.map('mapid').setView([46.60, -92.09], 15);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {}).addTo(map)
+        L.marker([46.75800, -92.09000]).addTo(map)
+            .bindPopup("Duluth")
+            .openPopup();
+
+        L.geoJSON(Bridge).addTo(map)
+
+        L.geoJSON(Park).addTo(map)
+
+        L.geoJSON(DECC).addTo(map)
+
+        var DECCIcon = L.icon({ // notice the L.icon which is a Leaflet object with properties
+        iconUrl: 'https://pbs.twimg.com/profile_images/923051835107299328/go7toaDE.jpg',
+        // this points to a jpg image obtained from the internet
+        iconSize: [50,50], // size of the icon
+        popupAnchor: [0,0] // where the icon is located relative to the lat lon of the point.
+        });
+
+        var customPopup = "DECC<br/><img src='https://decc.org/wp-lib/wp-content/uploads/2015/08/Back_decc_night-e1612547433506.jpg'width='100px'/>";
+
+        L.geoJSON(DECC, { // a
+        pointToLayer: function (feature, latlng) { // b
+        return L.marker(latlng, {icon: DECCIcon});}}) // c
+        .bindPopup(customPopup) // d
+        .addTo(map); //
+
+        var ParkIcon = L.icon({ // notice the L.icon which is a Leaflet object with properties
+        iconUrl: 'https://image.freepik.com/free-vector/landscape-park-scene-icon_24877-56516.jpg',
+        // this points to a jpg image obtained from the internet
+        iconSize: [50,50], // size of the icon
+        popupAnchor: [0,0] // where the icon is located relative to the lat lon of the point.
+        });
+
+        var customPopup2 = "Bay Front Blues Park<br/><img src='https://www.exploreminnesota.com/sites/default/files/listing_images/43c62963b72ed4c2a87ae90c243a253b04da2381_4.jpg'width='100px'/>";
+
+        L.geoJSON(Park, { // a
+        pointToLayer: function (feature, latlng) { // b
+        return L.marker(latlng, {icon: ParkIcon});}}) // c
+        .bindPopup(customPopup2) // d
+        .addTo(map); //
+
+        var BridgeIcon = L.icon({ // notice the L.icon which is a Leaflet object with properties
+        iconUrl: 'https://cdn.dribbble.com/users/188438/screenshots/2268894/icon-duluth-02.png',
+        // this points to a jpg image obtained from the internet
+        iconSize: [50,50], // size of the icon
+        popupAnchor: [0,0] // where the icon is located relative to the lat lon of the point.
+        });
+
+        var customPopup3 = "Lift Bridge<br/><img src='http://www.goduluthmn.com/images/Duluth_Lift_Bridge.jpg'width='100px'/>";
+
+        L.geoJSON(Bridge, { // a
+        pointToLayer: function (feature, latlng) { // b
+        return L.marker(latlng, {icon: BridgeIcon});}}) // c
+        .bindPopup(customPopup3) // d
+        .addTo(map); //
+
+        var polygon = L.polygon([
+            [46.70, -92.00],
+            [46.70, -92.2],
+            [46.60, -92.30]
+            ])
+        .addTo(mymap);
+
+
+    </script>
+
+    
+</body>
+</html>
